@@ -837,6 +837,8 @@ int main()
 {
     int sum = 0;
 
+    //sequence test;
+    //test.attach(10);
 
     cout << "Running " << DESCRIPTION[0] << endl;
 
