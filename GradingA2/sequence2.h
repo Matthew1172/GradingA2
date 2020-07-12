@@ -95,8 +95,13 @@ namespace assignment_sequence2
         value_type current() const;
 
         void printAll() {
-            for (int i = 1; i <= many_nodes; i++) {
-                std::cout << list_locate(head_ptr, i)->data() << std::endl;
+            if (many_nodes < 1) std::cout << "no nodes" << std::endl;
+            start();
+            int i = 1;
+            while (i <= many_nodes) {
+                std::cout << current() << std::endl;
+                advance();
+                i++;
             }
         }
         void printH() {
@@ -113,6 +118,11 @@ namespace assignment_sequence2
             std::cout << "PRECURSOR" << std::endl;
             std::cout << pre->data() << std::endl;
             std::cout << "----------PRECURSOR------" << std::endl;
+        }
+        void printC() {
+            std::cout << "CURRENT" << std::endl;
+            std::cout << current_ptr->data() << std::endl;
+            std::cout << "----------CURRENT------" << std::endl;
         }
 
     private:

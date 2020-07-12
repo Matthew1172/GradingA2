@@ -401,6 +401,8 @@ int test2()
     for (i = 4; i <= TESTSIZE; i++)
         test.attach(i * 10);
 
+    test.printAll();
+
     // Test that the list is correctly filled.
     cout << "Now I will test that the list has 10, 20, 30, ...";
     cout << TESTSIZE * 10 << "." << endl;
@@ -840,7 +842,7 @@ int main()
     cout << "Running " << DESCRIPTION[0] << endl;
 
     sum += run_a_test(1, DESCRIPTION[1], test1, YOURPOINTS[1]);
-    //sum += run_a_test(2, DESCRIPTION[2], test2, YOURPOINTS[2]);
+    sum += run_a_test(2, DESCRIPTION[2], test2, YOURPOINTS[2]);
     //sum += run_a_test(3, DESCRIPTION[3], test3, YOURPOINTS[3]);
     //sum += run_a_test(4, DESCRIPTION[4], test4, YOURPOINTS[4]);
     //sum += run_a_test(5, DESCRIPTION[5], test5, YOURPOINTS[5]);

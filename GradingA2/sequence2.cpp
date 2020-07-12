@@ -43,13 +43,13 @@ void sequence::insert(const sequence::value_type& entry) {
 	else if (!is_item() || this->current_ptr == this->head_ptr) {
 		this->pre = this->head_ptr;
 		list_head_insert(this->head_ptr, entry);
-		this->head_ptr->link();
 		this->current_ptr = this->head_ptr;
+		this->tail_ptr = this->head_ptr;
 	}
 	else {
 		list_insert(this->pre, entry);
-		this->pre = this->current_ptr;
-		this->current_ptr = this->current_ptr->link();
+		this->current_ptr = this->pre->link();
+		//this->current_ptr = this->current_ptr->link();
 	}
 	this->many_nodes++;
 }
