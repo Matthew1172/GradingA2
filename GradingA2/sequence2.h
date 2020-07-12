@@ -100,16 +100,26 @@ namespace assignment_sequence2
             }
         }
         void printH() {
+            std::cout << "HEAD" << std::endl;
             std::cout << head_ptr->data() << std::endl;
+            std::cout << "----------HEAD--------------" << std::endl;
         }
         void printT() {
+            std::cout << "TAIL" << std::endl;
             std::cout << tail_ptr->data() << std::endl;
+            std::cout << "----------TAIL------------" << std::endl;
+        }
+        void printP() {
+            std::cout << "PRECURSOR" << std::endl;
+            std::cout << pre->data() << std::endl;
+            std::cout << "----------PRECURSOR------" << std::endl;
         }
 
     private:
         node* current_ptr;    //
         node* head_ptr;       // List head pointer
         node* tail_ptr;       // List head pointer
+        node* pre;
         size_type many_nodes; // Number of nodes on the list
     };
 }

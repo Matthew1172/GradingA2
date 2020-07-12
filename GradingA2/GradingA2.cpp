@@ -300,7 +300,6 @@ int test1()
     cout << "Starting with an empty sequence." << endl;
     if (!correct(empty, 0, 0, items1)) return 0;
 
-
     // Test the attach function to add something to an empty list
     cout << "I am now using attach to put 10 into an empty sequence." << endl;
     test.attach(10);
@@ -837,8 +836,6 @@ int main()
 {
     int sum = 0;
 
-    //sequence test;
-    //test.attach(10);
 
     cout << "Running " << DESCRIPTION[0] << endl;
 

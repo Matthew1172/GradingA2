@@ -5,23 +5,23 @@ sequence::sequence() {
 	this->head_ptr = NULL;
 	this->tail_ptr = NULL;
 	this->current_ptr = NULL;
-	this->many_nodes = list_length(this->head_ptr);
+	this->pre = NULL;
+	this->many_nodes = 0;
 }
 
 sequence::sequence(const sequence& source) {
-	
+	list_copy(source.head_ptr, this->head_ptr, this->tail_ptr);
+	this->many_nodes = source.many_nodes;
 }
 
 sequence::~sequence() {
 	list_clear(this->head_ptr);
-	delete this->head_ptr;
-	delete this->current_ptr;
-	delete this->tail_ptr;
 	this->many_nodes = 0;
 }
 
 void sequence::start() {
 	this->current_ptr = this->head_ptr;
+	this->pre = NULL;
 }
 
 void sequence::end() {
@@ -29,51 +29,60 @@ void sequence::end() {
 }
 
 void sequence::advance() {
+	this->pre = this->current_ptr;
 	this->current_ptr = this->current_ptr->link();
-	//try { if (is_item()) this->current_index++; }
-	//catch (const std::exception & e) { exit(1); }
 }
 
 void sequence::insert(const sequence::value_type& entry) {
-	if (!is_item()) {
-		list_head_insert(this->head_ptr, entry);
-		this->many_nodes++;
-		this->current_ptr = this->head_ptr++;
-		this->tail_ptr = this->current_ptr;
-	}
-	else {
-		list_insert(this->current_ptr--, entry);
-		this->many_nodes++;
-		this->current_ptr = this->current_ptr++;
-	}
-}
-
-void sequence::attach(const value_type& entry) {
 	if (this->many_nodes < 1) {
+		this->pre = this->head_ptr;
 		list_head_insert(this->head_ptr, entry);
 		this->current_ptr = this->head_ptr;
-		this->tail_ptr = this->current_ptr;
+		this->tail_ptr = this->head_ptr;
+	}
+	else if (!is_item() || this->current_ptr == this->head_ptr) {
+		this->pre = this->head_ptr;
+		list_head_insert(this->head_ptr, entry);
+		this->head_ptr->link();
+		this->current_ptr = this->head_ptr;
 	}
 	else {
-		if (!is_item()) this->current_ptr = this->tail_ptr-1;
-
-		if (this->tail_ptr - 1 == this->current_ptr) {
-			node* insert = new node(entry);
-			this->tail_ptr->set_link(insert);
-			this->tail_ptr = insert;
-			this->current_ptr = this->tail_ptr;
-		}
-		else {
-			list_insert(this->current_ptr--, entry);
-		}
+		list_insert(this->pre, entry);
+		this->pre = this->current_ptr;
+		this->current_ptr = this->current_ptr->link();
 	}
 	this->many_nodes++;
 }
 
+void sequence::attach(const value_type & entry) {
+	/* If empty, set tail */
+	if (many_nodes < 1) {
+		this->pre = this->head_ptr;
+		list_head_insert(this->head_ptr, entry);
+		this->current_ptr = this->head_ptr;
+		this->tail_ptr = this->head_ptr;
+	}
+	/* If no item or cursor points to the last item, insert at tail */
+	else if (!is_item() || this->current_ptr == this->tail_ptr) {
+		this->pre = this->tail_ptr;
+		list_insert(this->tail_ptr, entry);
+		this->tail_ptr = this->tail_ptr->link(); /* Update tail */
+		this->current_ptr = this->tail_ptr;
+	}
+	/* Attaches at the middle of the list */
+	else {
+		this->pre = this->current_ptr;
+		list_insert(this->current_ptr, entry);
+		this->current_ptr = this->current_ptr->link();
+	}
+	this->many_nodes++;
+}
+
+
 void sequence::remove_current() {
 	if (this->tail_ptr != this->current_ptr) {
-		node* t = this->current_ptr++;
-		list_remove(this->current_ptr--);
+		node* t = this->current_ptr+1;
+		list_remove(this->current_ptr-1);
 		this->current_ptr = t;
 	}
 	else {
@@ -83,6 +92,7 @@ void sequence::remove_current() {
 		this->current_ptr = NULL;
 	}
 }
+
 
 size_t sequence::size() const {
 	return this->many_nodes;
@@ -99,5 +109,9 @@ sequence::value_type sequence::current() const {
 
 void assignment_sequence2::sequence::operator=(const sequence& source)
 {
-
+	if (this == &source) return;
+	list_clear(this->head_ptr);
+	this->many_nodes = 0;
+	list_copy(source.head_ptr, this->head_ptr, this->tail_ptr);
+	this->many_nodes = source.many_nodes;
 }
