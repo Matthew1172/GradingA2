@@ -58,32 +58,27 @@ void sequence::insert(const sequence::value_type& entry) {
 		list_head_insert(this->head_ptr, entry);
 		this->pre = this->head_ptr;
 		this->current_ptr = this->head_ptr;
-		//this->tail_ptr = this->head_ptr;
 	}
 	else {
 		list_insert(this->pre, entry);
 		this->current_ptr = this->pre->link();
-		//this->current_ptr = this->current_ptr->link();
 	}
 	this->many_nodes++;
 }
 
 void sequence::attach(const value_type & entry) {
-	/* If empty, set tail */
 	if (many_nodes < 1) {
 		list_head_insert(this->head_ptr, entry);
 		this->pre = this->head_ptr;
 		this->current_ptr = this->head_ptr;
 		this->tail_ptr = this->head_ptr;
 	}
-	/* If no item or cursor points to the last item, insert at tail */
 	else if (!is_item() || this->current_ptr == this->tail_ptr) {
 		this->pre = this->tail_ptr;
 		list_insert(this->tail_ptr, entry);
-		this->tail_ptr = this->tail_ptr->link(); /* Update tail */
+		this->tail_ptr = this->tail_ptr->link();
 		this->current_ptr = this->tail_ptr;
 	}
-	/* Attaches at the middle of the list */
 	else {
 		this->pre = this->current_ptr;
 		list_insert(this->current_ptr, entry);
