@@ -656,6 +656,9 @@ int test5()
     original.start();
     original.advance();
     original.remove_current(); // Delete 2 from original, but not the copy.
+
+    copy2.printAll();
+    copy2.printC();
     if (!correct
     (copy2, 2 * TESTSIZE, 2 * TESTSIZE - 1, items)
         )
@@ -859,9 +862,9 @@ int main()
     sum += run_a_test(2, DESCRIPTION[2], test2, YOURPOINTS[2]);
     sum += run_a_test(3, DESCRIPTION[3], test3, YOURPOINTS[3]);
     sum += run_a_test(4, DESCRIPTION[4], test4, YOURPOINTS[4]);
-    //sum += run_a_test(5, DESCRIPTION[5], test5, YOURPOINTS[5]);
-    //sum += run_a_test(6, DESCRIPTION[6], test6, YOURPOINTS[6]);
-    //sum += run_a_test(7, DESCRIPTION[7], test7, YOURPOINTS[7]);
+    sum += run_a_test(5, DESCRIPTION[5], test5, YOURPOINTS[5]);
+    sum += run_a_test(6, DESCRIPTION[6], test6, YOURPOINTS[6]);
+    sum += run_a_test(7, DESCRIPTION[7], test7, YOURPOINTS[7]);
 
     cout << "If you submit this sequence to us now, you will have\n";
     cout << sum << " points out of the " << YOURPOINTS[0];

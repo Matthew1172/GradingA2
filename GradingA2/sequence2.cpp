@@ -113,22 +113,6 @@ void sequence::remove_current() {
 	}
 	this->many_nodes--;
 }
-/*
-void sequence::remove_current() {
-	if (this->tail_ptr != this->current_ptr) {
-		node* t = this->current_ptr+1;
-		list_remove(this->current_ptr-1);
-		this->current_ptr = t;
-	}
-	else {
-		this->tail_ptr = this->current_ptr--;
-		this->current_ptr--->set_link(NULL);
-		delete this->current_ptr;
-		this->current_ptr = NULL;
-	}
-}
-*/
-
 
 size_t sequence::size() const {
 	return this->many_nodes;
@@ -147,7 +131,21 @@ void assignment_sequence2::sequence::operator=(const sequence& source)
 {
 	if (this == &source) return;
 	list_clear(this->head_ptr);
-	this->many_nodes = 0;
-	list_copy(source.head_ptr, this->head_ptr, this->tail_ptr);
+
+	if (source.current_ptr == NULL) {
+		list_copy(source.head_ptr, this->head_ptr, this->tail_ptr);
+		this->current_ptr = NULL;
+		this->pre = NULL;
+	}
+	else if (source.current_ptr == source.head_ptr) {
+		list_copy(source.head_ptr, this->head_ptr, this->tail_ptr);
+		this->pre = NULL;
+		this->current_ptr = this->head_ptr;
+	}
+	else {
+		list_piece(source.head_ptr, source.pre, this->head_ptr, this->pre);
+		list_piece(source.current_ptr, source.tail_ptr, this->current_ptr, this->tail_ptr);
+		this->pre->set_link(this->current_ptr);
+	}
 	this->many_nodes = source.many_nodes;
 }
