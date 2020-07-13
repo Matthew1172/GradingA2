@@ -96,12 +96,8 @@ namespace assignment_sequence2
 
         void printAll() {
             if (many_nodes < 1) std::cout << "no nodes" << std::endl;
-            start();
-            int i = 1;
-            while (i <= many_nodes) {
-                std::cout << current() << std::endl;
-                advance();
-                i++;
+            for (const node* c = head_ptr; c != NULL; c = c->link()) {
+                std::cout << c->data() << std::endl;
             }
         }
         void printH() {
@@ -115,11 +111,13 @@ namespace assignment_sequence2
             std::cout << "----------TAIL------------" << std::endl;
         }
         void printP() {
+            if (!is_item()) return;
             std::cout << "PRECURSOR" << std::endl;
             std::cout << pre->data() << std::endl;
             std::cout << "----------PRECURSOR------" << std::endl;
         }
         void printC() {
+            if (!is_item()) return;
             std::cout << "CURRENT" << std::endl;
             std::cout << current_ptr->data() << std::endl;
             std::cout << "----------CURRENT------" << std::endl;

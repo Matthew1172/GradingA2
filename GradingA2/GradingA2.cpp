@@ -394,6 +394,7 @@ int test2()
     }
     cout << " passed." << endl;
 
+
     // Attach more items until the list becomes full.
     // Note that the first attach should attach to the end of the list.
     cout << "Calling attach to put the numbers 40, 50, 60 ...";
@@ -401,7 +402,6 @@ int test2()
     for (i = 4; i <= TESTSIZE; i++)
         test.attach(i * 10);
 
-    test.printAll();
 
     // Test that the list is correctly filled.
     cout << "Now I will test that the list has 10, 20, 30, ...";
@@ -465,11 +465,17 @@ int test3()
     cout << endl;
     test.start();
     test.advance();
+
+
     test.remove_current();
     if (!correct(test, 1, 1, items2)) return 0;
     cout << "Set the cursor to the start and remove the 10." << endl;
     test.start();
+
+
     test.remove_current();
+
+
     if (!correct(test, 0, 0, items2)) return 0;
 
     // Build a list with three items 10, 20, 30, and remove the middle,
@@ -489,6 +495,7 @@ int test3()
     cout << "so the sequence should now contain just 30." << endl;
     test.start();
     test.remove_current();
+
     if (!correct(test, 1, 0, items1)) return 0;
     cout << "Remove the 30 from the sequence, resulting in an empty sequence." << endl;
     test.start();
@@ -549,11 +556,17 @@ int test4()
     cout << "Copy constructor test: for a list with cursor at tail." << endl;
     for (i = 2; i <= 2 * TESTSIZE; i++)
         original.attach(i);
+
     sequence copy2(original);
+
     original.remove_current(); // Delete tail from original, but not the copy
     original.start();
     original.advance();
     original.remove_current(); // Delete 2 from original, but not the copy.
+
+    copy2.printAll();
+
+
     if (!correct
     (copy2, 2 * TESTSIZE, 2 * TESTSIZE - 1, items)
         )
@@ -565,6 +578,7 @@ int test4()
     for (i = 1; i < TESTSIZE; i++)
         original.advance();
     // Cursor is now at location [TESTSIZE] (counting [0] as the first spot).
+    original.printAll();
     sequence copy3(original);
     original.start();
     original.advance();
@@ -843,8 +857,8 @@ int main()
 
     sum += run_a_test(1, DESCRIPTION[1], test1, YOURPOINTS[1]);
     sum += run_a_test(2, DESCRIPTION[2], test2, YOURPOINTS[2]);
-    //sum += run_a_test(3, DESCRIPTION[3], test3, YOURPOINTS[3]);
-    //sum += run_a_test(4, DESCRIPTION[4], test4, YOURPOINTS[4]);
+    sum += run_a_test(3, DESCRIPTION[3], test3, YOURPOINTS[3]);
+    sum += run_a_test(4, DESCRIPTION[4], test4, YOURPOINTS[4]);
     //sum += run_a_test(5, DESCRIPTION[5], test5, YOURPOINTS[5]);
     //sum += run_a_test(6, DESCRIPTION[6], test6, YOURPOINTS[6]);
     //sum += run_a_test(7, DESCRIPTION[7], test7, YOURPOINTS[7]);

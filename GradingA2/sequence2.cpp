@@ -10,7 +10,21 @@ sequence::sequence() {
 }
 
 sequence::sequence(const sequence& source) {
-	list_copy(source.head_ptr, this->head_ptr, this->tail_ptr);
+	if (source.current_ptr == NULL) {
+		list_copy(source.head_ptr, this->head_ptr, this->tail_ptr);
+		this->current_ptr = NULL;
+		this->pre = NULL;
+	}
+	else if (source.current_ptr == source.head_ptr) {
+		list_copy(source.head_ptr, this->head_ptr, this->tail_ptr);
+		this->pre = NULL;
+		this->current_ptr = this->head_ptr;
+	}
+	else {
+		list_piece(source.head_ptr, source.pre, this->head_ptr, this->pre);
+		list_piece(source.current_ptr, source.tail_ptr, this->current_ptr, this->tail_ptr);
+		this->pre->set_link(this->current_ptr);
+	}
 	this->many_nodes = source.many_nodes;
 }
 
@@ -35,16 +49,16 @@ void sequence::advance() {
 
 void sequence::insert(const sequence::value_type& entry) {
 	if (this->many_nodes < 1) {
-		this->pre = this->head_ptr;
 		list_head_insert(this->head_ptr, entry);
+		this->pre = this->head_ptr;
 		this->current_ptr = this->head_ptr;
 		this->tail_ptr = this->head_ptr;
 	}
 	else if (!is_item() || this->current_ptr == this->head_ptr) {
-		this->pre = this->head_ptr;
 		list_head_insert(this->head_ptr, entry);
+		this->pre = this->head_ptr;
 		this->current_ptr = this->head_ptr;
-		this->tail_ptr = this->head_ptr;
+		//this->tail_ptr = this->head_ptr;
 	}
 	else {
 		list_insert(this->pre, entry);
@@ -57,8 +71,8 @@ void sequence::insert(const sequence::value_type& entry) {
 void sequence::attach(const value_type & entry) {
 	/* If empty, set tail */
 	if (many_nodes < 1) {
-		this->pre = this->head_ptr;
 		list_head_insert(this->head_ptr, entry);
+		this->pre = this->head_ptr;
 		this->current_ptr = this->head_ptr;
 		this->tail_ptr = this->head_ptr;
 	}
@@ -78,7 +92,28 @@ void sequence::attach(const value_type & entry) {
 	this->many_nodes++;
 }
 
-
+void sequence::remove_current() {
+	if (this->many_nodes <= 1) {
+		list_head_remove(this->head_ptr);
+		this->current_ptr = NULL;
+		this->pre = NULL;
+	}
+	else if (this->current_ptr == this->head_ptr) {
+		this->current_ptr = this->head_ptr->link();
+		list_head_remove(this->head_ptr);
+	}
+	else if (this->current_ptr == this->tail_ptr) {
+		list_remove(this->pre);
+		this->pre = NULL;
+		this->current_ptr = NULL;
+	}
+	else {
+		this->current_ptr = this->current_ptr->link();
+		list_remove(this->pre);
+	}
+	this->many_nodes--;
+}
+/*
 void sequence::remove_current() {
 	if (this->tail_ptr != this->current_ptr) {
 		node* t = this->current_ptr+1;
@@ -92,6 +127,7 @@ void sequence::remove_current() {
 		this->current_ptr = NULL;
 	}
 }
+*/
 
 
 size_t sequence::size() const {

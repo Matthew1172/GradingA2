@@ -168,6 +168,7 @@ namespace assignment_sequence2
     void list_remove(node* previous_ptr);
     void list_clear(node*& head_ptr);
     void list_copy(const node* source_ptr, node*& head_ptr, node*& tail_ptr);
+    void list_piece(node* start_ptr, node* end_ptr, node*& head_ptr, node*& tail_ptr);
 }
 
 #endif

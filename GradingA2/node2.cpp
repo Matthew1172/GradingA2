@@ -132,4 +132,28 @@ namespace assignment_sequence2
 		}
 	}
 
+	// Library facilities used: stdlib.h
+	void list_piece(node* start_ptr, node* end_ptr, node*& head_ptr, node*& tail_ptr)
+	{
+		head_ptr = NULL;
+		tail_ptr = NULL;
+
+		// Handle the case of the empty list
+		if (start_ptr == NULL)
+			return;
+		// Make the head node for the newly created list, and put data in it
+		list_head_insert(head_ptr, start_ptr->data());
+		tail_ptr = head_ptr;
+		if (start_ptr == end_ptr)
+			return;
+		// Copy the rest of the nodes one at a time, adding at the tail of new list
+		for (start_ptr = start_ptr->link(); start_ptr != NULL; start_ptr = start_ptr->link())
+		{
+			list_insert(tail_ptr, start_ptr->data());
+			tail_ptr = tail_ptr->link();
+			if (start_ptr == end_ptr)
+				return;
+		}
+	}
+
 }
